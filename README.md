@@ -2,7 +2,7 @@
 # Run, Coliru!
 
 <p align="center">
-  <a href="https://your-live-demo-url.com">
+  <a href="https://coliru.peres.dev/">
     <img src="https://img.shields.io/badge/Live-Demo-brightgreen" alt="Live Demo">
   </a>
 </p>
