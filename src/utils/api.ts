@@ -1,6 +1,4 @@
 import { GistFile, GistResponse, AppState, Tab } from "@/types";
-import JSZip from "jszip";
-import { saveAs } from "file-saver";
 
 interface FileData {
     [filename: string]: string;
@@ -10,15 +8,23 @@ const buildCommand = (files: FileData, args: string) => {
     let fileEcho = "";
     let cppFiles = "";
     for (const [filename, content] of Object.entries(files)) {
-        var escapedContent = content;
-        escapedContent = escapedContent.replace(/'/g, `\\'`);
-        fileEcho += `echo '${escapedContent}'>${filename}&&`;
+        const escapedContent = escapeShellContent(content);
+        const escapedFilename = escapeShellArg(filename);
+        fileEcho += `echo ${escapedContent} > ${escapedFilename} && `;
         if (filename.endsWith(".cpp")) {
-            cppFiles += `${filename} `;
+            cppFiles += `${escapedFilename} `;
         }
     }
     const finalArgs = args.replace("${cppFiles}", cppFiles);
-    return { cmd: `${fileEcho} ${finalArgs}` };
+    return { cmd: `${fileEcho}${finalArgs}` };
+};
+
+const escapeShellContent = (content: string) => {
+    return `$'${content.replace(/[\\']/g, '\\$&')}'`;
+};
+
+const escapeShellArg = (arg: string) => {
+    return `'${arg.replace(/'/g, "'\\''")}'`;
 };
 
 export const compileCode = async (state: AppState, dispatch: React.Dispatch<any>) => {
