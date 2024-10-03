@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Toaster } from "@/components/ui/toaster"
 import { Space_Mono } from 'next/font/google';
+import Script from 'next/script'
 import "./globals.css";
 
 const spaceMono = Space_Mono({
@@ -70,6 +71,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="manifest" href="/manifest.json" />
+        <Script src='/register-sw.js' />
       </head>
       <body
         className={`subpixel-antialiased ${spaceMono.className}`}
