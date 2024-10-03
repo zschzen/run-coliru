@@ -16,14 +16,15 @@ export const metadata: Metadata = {
   authors: [{ name: "Leandro Peres", url: "https://peres.dev" }],
   creator: "Leandro Peres",
   publisher: "Leandro Peres",
+  manifest: "/manifest.json",
   openGraph: {
     title: "Run, Coliru! Run.",
     description: "Interactive code playground powered by Coliru compiler explorer",
-    url: "https://run.peres.dev",
+    url: "https://coliru.peres.dev",
     siteName: "Run, Coliru! Run.",
     images: [
       {
-        url: "https://run.peres.dev/og-image.png",
+        url: "https://coliru.peres.dev/og-image.png",
         width: 1200,
         height: 630,
         alt: "Run, Coliru! Run. - Interactive Code Playground",
@@ -37,15 +38,13 @@ export const metadata: Metadata = {
     title: "Run, Coliru! Run.",
     description: "Interactive code playground powered by Coliru compiler explorer",
     creator: "@zschzen",
-    images: ["https://run.peres.dev/twitter-image.png"],
+    images: ["https://coliru.peres.dev/twitter-image.png"],
   },
   keywords: ["code playground", "compiler explorer", "Coliru", "interactive coding", "code sharing"],
-  //themeColor: "#000000",
   icons: {
     icon: "/favicon.ico",
     apple: "/apple-icon.png",
   },
-  //manifest: "/site.webmanifest",
   robots: {
     index: true,
     follow: true,
@@ -58,7 +57,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "https://run.peres.dev",
+    canonical: "https://coliru.peres.dev",
   },
 };
 
@@ -69,6 +68,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+      </head>
       <body
         className={`subpixel-antialiased ${spaceMono.className}`}
       >
