@@ -72,50 +72,65 @@ export const compileCode = async (state: AppState, dispatch: React.Dispatch<any>
         });
 };
 
-export const loadGist = async (gistId: string, dispatch: React.Dispatch<any>): Promise<{ success: boolean; message: string }> => {
-    try {
-        const response = await fetch(`https://api.github.com/gists/${gistId}`);
-        
-        if (!response.ok) {
-            if (response.status === 404) {
-                return { success: false, message: "Gist not found. Please check the ID and try again." };
+// Type guard function
+function isGistResponse(data: unknown): data is GistResponse {
+    return (
+        typeof data === 'object' &&
+        data !== null &&
+        'files' in data &&
+        typeof (data as GistResponse).files === 'object'
+    );
+}
+
+export const loadGist = (gistId: string, dispatch: React.Dispatch<any>): Promise<{ success: boolean; message: string }> => {
+    return fetch(`https://api.github.com/gists/${gistId}`)
+        .then(response => {
+            if (!response.ok) {
+                if (response.status === 404) {
+                    return Promise.reject({ success: false, message: "Gist not found. Please check the ID and try again." });
+                }
+                return Promise.reject({ success: false, message: `HTTP error! status: ${response.status}` });
             }
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const data: GistResponse = await response.json();
-        
-        if (!data.files || Object.keys(data.files).length === 0) {
-            return { success: false, message: "The Gist is empty or contains no files." };
-        }
+            return response.json();
+        })
+        .then((data: unknown) => {
+            // Type guard
+            if (!isGistResponse(data)) {
+                return Promise.reject({ success: false, message: "Invalid response format from GitHub API." });
+            }
 
-        const newTabs = Object.entries(data.files).map(([filename, file]) => ({
-            id: filename,
-            content: file.content,
-        }));
-        
-        dispatch({ type: "SET_TABS", payload: newTabs });
+            if (!data.files || Object.keys(data.files).length === 0) {
+                return { success: false, message: "The Gist is empty or contains no files." };
+            }
 
-        // Find the appropriate entry point file
-        const entryPointFile = newTabs.find(tab => {
-            const lowercaseFilename = tab.id.toLowerCase();
-            return lowercaseFilename === 'main.c' || 
-                   lowercaseFilename === 'main.cpp' || 
-                   (lowercaseFilename.endsWith('.c') && lowercaseFilename.includes('main')) ||
-                   (lowercaseFilename.endsWith('.cpp') && lowercaseFilename.includes('main'));
+            const newTabs = Object.entries(data.files).map(([filename, file]) => ({
+                id: filename,
+                content: file.content,
+            }));
+            
+            dispatch({ type: "SET_TABS", payload: newTabs });
+
+            // Find the appropriate entry point file
+            const entryPointFile = newTabs.find(tab => {
+                const lowercaseFilename = tab.id.toLowerCase();
+                return lowercaseFilename === 'main.c' || 
+                       lowercaseFilename === 'main.cpp' || 
+                       (lowercaseFilename.endsWith('.c') && lowercaseFilename.includes('main')) ||
+                       (lowercaseFilename.endsWith('.cpp') && lowercaseFilename.includes('main'));
+            });
+
+            // Set the active tab to the entry point file if found, otherwise use the first tab
+            const activeTabId = entryPointFile ? entryPointFile.id : newTabs[0].id;
+            dispatch({ type: "SET_ACTIVE_TAB", payload: activeTabId });
+
+            localStorage.setItem("tabs", JSON.stringify(newTabs));
+            
+            return { success: true, message: "Gist loaded successfully!" };
+        })
+        .catch(error => {
+            console.error("Failed to load gist:", error);
+            return { success: false, message: "Failed to load Gist. Please try again later." };
         });
-
-        // Set the active tab to the entry point file if found, otherwise use the first tab
-        const activeTabId = entryPointFile ? entryPointFile.id : newTabs[0].id;
-        dispatch({ type: "SET_ACTIVE_TAB", payload: activeTabId });
-
-        localStorage.setItem("tabs", JSON.stringify(newTabs));
-        
-        return { success: true, message: "Gist loaded successfully!" };
-    } catch (error) {
-        console.error("Failed to load gist:", error);
-        return { success: false, message: "Failed to load Gist. Please try again later." };
-    }
 };
 
 export const loadLocalTabs = (dispatch: React.Dispatch<any>) => {
