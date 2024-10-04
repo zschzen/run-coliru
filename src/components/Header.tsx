@@ -3,13 +3,12 @@ import { Loader2, Play, Download, Settings, FileInput, HelpCircle, Menu } from "
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { useAppContext } from "@/context/AppContext";
 import { compileCode, loadGist } from "@/utils/api";
 import { saveAsZip } from "@/utils/fileUtils";
+import SettingsContent from "./SettingsContent";
 
 const Header: React.FC = () => {
   const { state, dispatch } = useAppContext();
@@ -21,10 +20,7 @@ const Header: React.FC = () => {
   const [gistInput, setGistInput] = useState("");
 
   const validateGistInput = (input: string): string | null => {
-    // GitHub Gist ID is typically 32 characters long
     const gistIdRegex = /^[a-f0-9]{32}$/i;
-    
-    // GitHub Gist URL format
     const gistUrlRegex = /^(https?:\/\/)?(gist\.github\.com\/([a-zA-Z0-9-]+\/)?[a-f0-9]{32})$/i;
 
     if (gistIdRegex.test(input)) {
@@ -169,32 +165,7 @@ const Header: React.FC = () => {
                     Configure compiler settings and input
                   </SheetDescription>
                 </SheetHeader>
-                <div className="mt-4 space-y-4">
-                  <div>
-                    <Label htmlFor="compileArgs" className="text-sm font-semibold mb-1 block text-[#f4f4f4]">
-                      Compile Arguments
-                    </Label>
-                    <Textarea
-                      id="compileArgs"
-                      value={state.compileArgs}
-                      onChange={(e) => dispatch({ type: "SET_COMPILE_ARGS", payload: e.target.value })}
-                      className="bg-[#393939] border-[#525252] text-[#f4f4f4]"
-                      rows={3}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="stdin" className="text-sm font-semibold mb-1 block text-[#f4f4f4]">
-                      Standard Input (stdin)
-                    </Label>
-                    <Textarea
-                      id="stdin"
-                      value={state.stdinInput}
-                      onChange={(e) => dispatch({ type: "SET_STDIN_INPUT", payload: e.target.value })}
-                      className="bg-[#393939] border-[#525252] text-[#f4f4f4]"
-                      rows={3}
-                    />
-                  </div>
-                </div>
+                <SettingsContent />
               </SheetContent>
             </Sheet>
           </div>
@@ -226,14 +197,14 @@ const Header: React.FC = () => {
             <DialogTitle>Load Gist</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
-            <Label htmlFor="gistInput" className="text-sm font-semibold mb-1 block text-[#f4f4f4]">
+            <label htmlFor="gistInput" className="text-sm font-semibold mb-1 block text-[#f4f4f4]">
               Enter Gist URL or ID
-            </Label>
-            <Textarea
+            </label>
+            <textarea
               id="gistInput"
               value={gistInput}
               onChange={(e) => setGistInput(e.target.value)}
-              className="bg-[#393939] border-[#525252] text-[#f4f4f4]"
+              className="w-full bg-[#393939] border-[#525252] text-[#f4f4f4] rounded-md p-2"
               rows={3}
             />
             <Button onClick={handleLoadGist} className="w-full bg-[#0f62fe] hover:bg-[#0353e9] text-white">
