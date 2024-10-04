@@ -217,12 +217,16 @@ const Header: React.FC = () => {
             <label htmlFor="gistInput" className="text-sm font-semibold mb-1 block text-[#f4f4f4]">
               Enter Gist URL or ID
             </label>
-            <textarea
+            <input
               id="gistInput"
               value={gistInput}
               onChange={(e) => setGistInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key !== 'Enter') return;
+                handleLoadGist();
+              }}
+              placeholder="e.g.: https://gist.github.com/user/1234567890"
               className="w-full bg-[#393939] border-[#525252] text-[#f4f4f4] rounded-md p-2"
-              rows={3}
             />
             <Button onClick={handleLoadGist} className="w-full bg-[#0f62fe] hover:bg-[#0353e9] text-white">
               Load Gist
