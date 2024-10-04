@@ -37,7 +37,7 @@
     "next": "14.2.14",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "tailwind-merge": "^2.5.2",
+    "tailwind-merge": "^2.5.3",
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
@@ -45,7 +45,7 @@
     "@cloudflare/workers-types": "^4.20240925.0",
     "@types/file-saver": "^2.0.7",
     "@types/node": "^22.7.4",
-    "@types/react": "^18.3.10",
+    "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.0",
     "eslint": "^9.11.1",
     "eslint-config-next": "14.2.14",
@@ -53,7 +53,7 @@
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.13",
     "typescript": "^5.6.2",
-    "vercel": "^37.6.0",
+    "vercel": "^37.6.1",
     "wrangler": "^3.79.0"
   }
 }
