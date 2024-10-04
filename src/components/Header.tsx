@@ -9,6 +9,7 @@ import { useAppContext } from "@/context/AppContext";
 import { compileCode, loadGist } from "@/utils/api";
 import { saveAsZip } from "@/utils/fileUtils";
 import SettingsContent from "./SettingsContent";
+import Feedback from "./Feedback";
 
 const Header: React.FC = () => {
   const { state, dispatch } = useAppContext();
@@ -152,6 +153,7 @@ const Header: React.FC = () => {
                 <p>Load a Gist by URL or ID</p>
               </TooltipContent>
             </Tooltip>
+            <Feedback />
           </div>
 
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
