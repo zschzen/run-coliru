@@ -73,45 +73,57 @@ export default function Feedback() {
   const handleSubmit = async () => {
     setIsSubmitting(true);
   
-    const response = await fetch('https://run-coliru-feedback.glitch.me/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ rating, comment }),
-    }).catch(() => null);
-  
-    if (!response) {
-      toast({
-        title: "Connection Interrupted",
-        description: "Looks like we lost contact with the mothership. Please try again.",
-        variant: "destructive",
+    try {
+      const response = await fetch('https://run-coliru-feedback.glitch.me/feedback', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ rating, comment }),
       });
-      setIsSubmitting(false);
-      return;
-    }
   
-    const data = await response.json().catch(() => ({ success: false })) as FeedbackResponse;
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
   
-    if (response.ok && data.success) {
-      toast({
-        title: "Feedback Accepted",
-        description: "Your words carry weight. We will use them wisely.",
-        variant: "default",
-      });
-      setIsOpen(false);
-      setRating(0);
-      setComment("");
-    } else {
+      // Check if the response is JSON
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.indexOf("application/json") !== -1) {
+        const data = await response.json() as FeedbackResponse;
+        if (data.success) {
+          toast({
+            title: "Feedback Accepted",
+            description: "Your words carry weight. We will use them wisely.",
+            variant: "default",
+          });
+          setIsOpen(false);
+          setRating(0);
+          setComment("");
+        } else {
+          throw new Error(data.error || "Submission failed");
+        }
+      } else {
+        // If the response is not JSON, assume it's a success
+        toast({
+          title: "Feedback Accepted",
+          description: "Your words carry weight. We will use them wisely.",
+          variant: "default",
+        });
+        setIsOpen(false);
+        setRating(0);
+        setComment("");
+      }
+    } catch (error) {
+      console.error('Error submitting feedback:', error);
       toast({
         title: "Transmission Failed",
-        description: data.error || "Something went wrong. Try sending your message again.",
+        description: error instanceof Error ? error.message : "Something went wrong. Try sending your message again.",
         variant: "destructive",
       });
+    } finally {
+      setIsSubmitting(false);
     }
-  
-    setIsSubmitting(false);
-  };  
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
