@@ -4,7 +4,7 @@ interface FileData {
     [filename: string]: string;
 }
 
-const buildCommand = (files: FileData, args: string) => {
+const buildCommand = (files: FileData, args: string, executionCmd: string, stdinInput: string) => {
     let fileEcho = "";
     let cppFiles = "";
     for (const [filename, content] of Object.entries(files)) {
@@ -16,7 +16,14 @@ const buildCommand = (files: FileData, args: string) => {
         }
     }
     const finalArgs = args.replace("${cppFiles}", cppFiles);
-    return { cmd: `${fileEcho}${finalArgs}` };
+    
+    let finalExecution = executionCmd;
+    if (stdinInput) {
+        // Wrap the execution command in a subshell and use a here-document
+        finalExecution = `(${executionCmd}) << 'EOF'\n${stdinInput}\nEOF`;
+    }
+    
+    return { cmd: `${fileEcho}${finalArgs} && ${finalExecution}` };
 };
 
 const escapeShellContent = (content: string) => {
@@ -36,7 +43,7 @@ export const compileCode = async (state: AppState, dispatch: React.Dispatch<any>
         files[tab.id] = tab.content;
     });
 
-    const payload = buildCommand(files, state.compileArgs);
+    const payload = buildCommand(files, state.compileArgs, state.executionCmd, state.stdinInput);
 
     fetch("https://coliru.stacked-crooked.com/compile", {
         method: "POST",

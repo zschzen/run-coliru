@@ -36,7 +36,8 @@ int main()
   output: "",
   outputHistory: [],
   isCompiling: false,
-  compileArgs: "g++ -std=c++20 -O2 -Wall -pedantic -pthread ${cppFiles} && ./a.out; echo Returned: $?",
+  compileArgs: "g++ -std=c++20 -O2 -Wall -pedantic -pthread ${cppFiles}",
+  executionCmd: "./a.out; echo Returned: $?",
   stdinInput: "",
   markerCounts: {},
 

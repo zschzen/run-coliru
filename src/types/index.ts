@@ -30,6 +30,7 @@ export interface AppState {
   outputHistory: OutputEntry[];
   isCompiling: boolean;
   compileArgs: string;
+  executionCmd: string;
   stdinInput: string;
   markerCounts: MarkerCounts;
 
@@ -45,6 +46,7 @@ export type AppAction =
   | { type: "CLEAR_OUTPUT_HISTORY"; payload: [] }
   | { type: "SET_IS_COMPILING"; payload: boolean }
   | { type: "SET_COMPILE_ARGS"; payload: string }
+  | { type: "SET_EXECUTION_CMD"; payload: string }
   | { type: "SET_STDIN_INPUT"; payload: string }
   | { type: "SET_MARKER_COUNTS"; payload: MarkerCounts }
 

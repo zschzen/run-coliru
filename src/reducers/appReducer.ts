@@ -18,8 +18,10 @@ export const appReducer = (state: AppState, action: AppAction): AppState => {
       return { ...state, compileArgs: action.payload };
     case "SET_STDIN_INPUT":
       return { ...state, stdinInput: action.payload };
-      case "SET_MARKER_COUNTS":
-        return { ...state, markerCounts: action.payload };
+    case "SET_EXECUTION_CMD":
+      return { ...state, executionCmd: action.payload };
+    case "SET_MARKER_COUNTS":
+      return { ...state, markerCounts: action.payload };
     case "SET_IS_OUTPUT_COLLAPSED":
       return { ...state, isOutputCollapsed: action.payload };
     case "SET_IS_VIM_MODE_ENABLED":
