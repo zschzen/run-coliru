@@ -86,7 +86,7 @@ dependencies:
 devDependencies:
   '@cloudflare/next-on-pages':
     specifier: ^1.13.3
-    version: 1.13.3(@cloudflare/workers-types@4.20240925.0)(vercel@37.6.1)(wrangler@3.79.0)
+    version: 1.13.3(@cloudflare/workers-types@4.20240925.0)(vercel@37.6.1)(wrangler@3.80.0)
   '@cloudflare/workers-types':
     specifier: ^4.20240925.0
     version: 4.20240925.0
@@ -109,8 +109,8 @@ devDependencies:
     specifier: 14.2.14
     version: 14.2.14(eslint@9.11.1)(typescript@5.6.2)
   eslint-plugin-next-on-pages:
-    specifier: ^1.13.3
-    version: 1.13.3(eslint@9.11.1)
+    specifier: ^1.13.4
+    version: 1.13.4(eslint@9.11.1)
   postcss:
     specifier: ^8.4.47
     version: 8.4.47
@@ -124,8 +124,8 @@ devDependencies:
     specifier: ^37.6.1
     version: 37.6.1
   wrangler:
-    specifier: ^3.79.0
-    version: 3.79.0(@cloudflare/workers-types@4.20240925.0)
+    specifier: ^3.80.0
+    version: 3.80.0(@cloudflare/workers-types@4.20240925.0)
 
 packages:
 
@@ -140,7 +140,7 @@ packages:
       mime: 3.0.0
     dev: true
 
-  /@cloudflare/next-on-pages@1.13.3(@cloudflare/workers-types@4.20240925.0)(vercel@37.6.1)(wrangler@3.79.0):
+  /@cloudflare/next-on-pages@1.13.3(@cloudflare/workers-types@4.20240925.0)(vercel@37.6.1)(wrangler@3.80.0):
     resolution: {integrity: sha512-pPi0cCvSFLtWr/e3iqmpG4h0Apg3NWaw26arDDR7Ap2p/jDewsX4y6dDDRv1vZqfUw5xCgBB6xxNf5vjhbDCzA==}
     hasBin: true
     peerDependencies:
@@ -165,7 +165,7 @@ packages:
       pcre-to-regexp: 1.1.0
       semver: 7.6.3
       vercel: 37.6.1
-      wrangler: 3.79.0(@cloudflare/workers-types@4.20240925.0)
+      wrangler: 3.80.0(@cloudflare/workers-types@4.20240925.0)
     transitivePeerDependencies:
       - bufferutil
       - supports-color
@@ -655,8 +655,8 @@ packages:
     engines: {node: '>=12.22'}
     dev: true
 
-  /@humanwhocodes/retry@0.3.0:
-    resolution: {integrity: sha512-d2CGZR2o7fS6sWB7DG/3a95bGKQyHMACZ5aW8qGkkqQpUoZV6C0X7Pc7l4ZNMZkfNBf4VWNe9E1jRsf0G146Ew==}
+  /@humanwhocodes/retry@0.3.1:
+    resolution: {integrity: sha512-JBxkERygn7Bv/GbN5Rv8Ul6LVknS+5Bp6RgDC/O8gEBU/yeH5Ui5C/OlWrTb6qct7LjjfT6Re2NxB0ln0yYybA==}
     engines: {node: '>=18.18'}
     dev: true
 
@@ -3330,8 +3330,8 @@ packages:
       string.prototype.includes: 2.0.0
     dev: true
 
-  /eslint-plugin-next-on-pages@1.13.3(eslint@9.11.1):
-    resolution: {integrity: sha512-nktUoJQu9jhEA2/08ky6TOss/cx4qeZr5VPvbKFLFCAxmeQuyYwwzryIqsDbkqxWAJLgzLcDEES09zrZmmxHog==}
+  /eslint-plugin-next-on-pages@1.13.4(eslint@9.11.1):
+    resolution: {integrity: sha512-0b16QbWlZu/6P5bKnsoi2Ztd09jTYR/YK7TIoRXJPP2DB8ENarzgFISUHlSQ7r9zqTD36vnq48SaWLXeu+xXEg==}
     peerDependencies:
       eslint: ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0
     dependencies:
@@ -3412,7 +3412,7 @@ packages:
       '@eslint/js': 9.11.1
       '@eslint/plugin-kit': 0.2.0
       '@humanwhocodes/module-importer': 1.0.1
-      '@humanwhocodes/retry': 0.3.0
+      '@humanwhocodes/retry': 0.3.1
       '@nodelib/fs.walk': 1.2.8
       '@types/estree': 1.0.6
       '@types/json-schema': 7.0.15
@@ -6063,8 +6063,8 @@ packages:
       '@cloudflare/workerd-windows-64': 1.20240925.0
     dev: true
 
-  /wrangler@3.79.0(@cloudflare/workers-types@4.20240925.0):
-    resolution: {integrity: sha512-29wzQWc5qNKtD3bSyAEX11j/U5IIk8xy2/ZJ4wljJlS5ppff8qGqI+LtlLmqjqTSeQqFLb87xRkms0YFUgNLXg==}
+  /wrangler@3.80.0(@cloudflare/workers-types@4.20240925.0):
+    resolution: {integrity: sha512-c9aN7Buf7XgTPpQkw1d0VjNRI4qg3m35PTg70Tg4mOeHwHGjsd74PAsP1G8BjpdqDjfWtsua7tj1g4M3/5dYNQ==}
     engines: {node: '>=16.17.0'}
     hasBin: true
     peerDependencies:
