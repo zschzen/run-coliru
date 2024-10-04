@@ -73,7 +73,7 @@ export default function Feedback() {
   const handleSubmit = async () => {
     setIsSubmitting(true);
   
-    const response = await fetch('https://run-coliru-feedback.glitch.me/feedback', {
+    const response = await fetch('https://run-coliru-feedback.glitch.me/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
