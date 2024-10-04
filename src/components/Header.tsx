@@ -32,17 +32,34 @@ const Header: React.FC = () => {
     return null;
   };
 
-  const handleLoadGist = () => {
+  const handleLoadGist = async () => {
     const validGistId = validateGistInput(gistInput);
-
+  
     if (validGistId) {
-      loadGist(validGistId, dispatch);
-      setIsGistDialogOpen(false);
-      setGistInput("");
-      toast({
-        title: "Gist Loaded",
-        description: "The Gist has been successfully loaded.",
-      });
+      try {
+        const result = await loadGist(validGistId, dispatch);
+        
+        if (result.success) {
+          setIsGistDialogOpen(false);
+          setGistInput("");
+          toast({
+            title: "Gist Loaded",
+            description: result.message,
+          });
+        } else {
+          toast({
+            variant: "destructive",
+            title: "Failed to Load Gist",
+            description: result.message,
+          });
+        }
+      } catch (error) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "An unexpected error occurred while loading the Gist.",
+        });
+      }
     } else {
       toast({
         variant: "destructive",
