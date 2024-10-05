@@ -104,8 +104,8 @@ const Tabs: React.FC = () => {
 
   return (
     <TooltipProvider>
-      <div className="flex flex-col h-fit bg-[#1e1e1e]">
-        <div className="flex items-center bg-[#252526] overflow-x-auto">
+      <div className="flex flex-col h-fit bg-[#181818]">
+        <div className="flex items-center bg-[#181818] overflow-x-auto">
           <DndContext
             sensors={sensors}
             collisionDetection={closestCenter}
@@ -133,20 +133,22 @@ const Tabs: React.FC = () => {
             </DragOverlay>
           </DndContext>
 
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <div
-                className="flex-shrink-0 flex items-center h-full px-3 py-1 text-[#c6c6c6] hover:bg-[#2a2d2e70] cursor-pointer"
-                onClick={addNewTab}
-                aria-label="New tab"
-              >
-                <Plus size={14} />
-              </div>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Add File</p>
-            </TooltipContent>
-          </Tooltip>
+          <div className="flex-grow flex items-center border-b border-[#424242AA] h-full">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div
+                  className="flex-shrink-0 flex items-center h-full px-3 py-1 text-[#c6c6c6] hover:bg-[#2a2d2e70] cursor-pointer border-dashed border-r border-[#424242AA]"
+                  onClick={addNewTab}
+                  aria-label="New tab"
+                >
+                  <Plus size={14} />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Add File</p>
+              </TooltipContent>
+            </Tooltip>
+          </div>
         </div>
 
         {/* New File Dialog */}
