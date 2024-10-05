@@ -45,7 +45,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
   };
 
   return (
-    <nav className="flex items-center justify-center space-x-2 mt-4" aria-label="Pagination">
+    <nav className="flex items-center justify-center space-x-2" aria-label="Pagination">
       <Button
         variant="outline"
         size="sm"
@@ -82,7 +82,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
         variant="outline"
         size="sm"
         onClick={() => onPageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
+        disabled={currentPage === totalPages || totalPages === 0}
         className="px-2 py-1 text-sm bg-[#262626] text-[#c6c6c6] border-[#393939] hover:bg-[#525252] hover:text-white transition-colors duration-200"
       >
         <span className="sr-only">Next</span>

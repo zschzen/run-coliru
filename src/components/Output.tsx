@@ -119,7 +119,7 @@ const Output: React.FC = () => {
       className="border-t border-[#393939]"
     >
       <CollapsibleTrigger asChild>
-        <div className="flex items-center justify-between w-full p-2 bg-[#262626] text-sm font-semibold cursor-pointer hover:bg-[#2f2f2f] transition-colors duration-200">
+        <div className="flex items-center justify-between w-full p-2 bg-[#262626] text-sm cursor-pointer hover:bg-[#2f2f2f] transition-colors duration-200">
           <span>Output</span>
           <div className="flex items-center">
             <TooltipProvider>
@@ -145,16 +145,6 @@ const Output: React.FC = () => {
       </CollapsibleTrigger>
       <CollapsibleContent className="bg-[#161616]">
         <div className="p-4">
-          <div className="mb-4 relative">
-            <Input
-              type="text"
-              value={searchTerm}
-              onChange={handleSearchChange}
-              placeholder="Search outputs..."
-              className="pl-8 bg-[#262626] text-white border-[#393939] focus:border-[#525252] focus:ring-1 focus:ring-[#525252]"
-            />
-            <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-[#c6c6c6]" size={16} />
-          </div>
           <ScrollArea className="h-60">
             <div className="space-y-4">
               {paginatedHistory.map((entry, index) => {
@@ -193,15 +183,30 @@ const Output: React.FC = () => {
               })}
             </div>
           </ScrollArea>
-          <div className="mt-4 flex justify-between items-center">
-            <div className="text-sm text-[#c6c6c6]">
-              {filteredHistory.length > 0 ? `Page ${currentPage} of ${totalPages}` : 'No results'}
+          <div className="mt-4 grid grid-cols-3 items-center">
+            <div className="relative">
+              <Input
+                type="text"
+                value={searchTerm}
+                onChange={handleSearchChange}
+                disabled={filteredHistory.length < 1}
+                placeholder="Search outputs..."
+                className="pl-8 bg-[#262626] text-white border-[#393939] focus:border-[#525252] focus:ring-1 focus:ring-[#525252]"
+              />
+              <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-[#c6c6c6]" size={16} />
             </div>
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={setCurrentPage}
-            />
+
+            <div className="text-center text-sm text-[#c6c6c6]">
+              {filteredHistory.length > 0 ? `Page ${currentPage} of ${totalPages}` : 'No Outputs'}
+            </div>
+
+            <div className="justify-self-end">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
+            </div>
           </div>
         </div>
       </CollapsibleContent>

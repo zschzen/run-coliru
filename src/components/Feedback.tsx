@@ -33,12 +33,12 @@ const messages = [
 
 const EmojiRating = ({ rating, setRating }: { rating: number; setRating: (rating: number) => void }) => {
   return (
-    <div className="flex justify-center space-x-4">
+    <div className="flex justify-center space-x-4 w-full">
       {emojis.map((emoji, index) => (
         <button
           key={index}
           onClick={() => setRating(index + 1)}
-          className={`text-3xl transition-transform hover:scale-110 ${
+          className={`text-3xl transition-all ease-in-out hover:scale-110 ${
             index + 1 === rating ? "scale-125" : "opacity-50 hover:opacity-100"
           }`}
           aria-label={`Rate ${index + 1} out of 5`}
@@ -62,6 +62,8 @@ export default function Feedback() {
     if (isOpen) {
       const randomIndex = Math.floor(Math.random() * messages.length)
       setRandomMessage(messages[randomIndex])
+    } else {
+      setRating(0);
     }
   }, [isOpen])
 
@@ -152,16 +154,18 @@ export default function Feedback() {
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
-          <EmojiRating rating={rating} setRating={setRating} />
           <Textarea
-            placeholder={messages[Math.floor(Math.random() * messages.length)]}
+            placeholder={"What if..."}
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             className="h-24 resize-none bg-[#393939] border-[#525252] text-[#f4f4f4]"
           />
         </div>
         <DialogFooter>
-          <Button 
+
+          <EmojiRating rating={rating} setRating={setRating} />
+
+          <Button
             onClick={handleSubmit} 
             disabled={rating === 0 || isSubmitting}
             className="bg-[#0f62fe] hover:bg-[#0353e9] text-white"
