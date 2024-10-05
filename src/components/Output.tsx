@@ -183,7 +183,7 @@ const Output: React.FC = () => {
               })}
             </div>
           </ScrollArea>
-          <div className="mt-4 grid grid-cols-3 items-center">
+          <div className="mt-4 grid grid-cols-2 items-center">
             <div className="relative">
               <Input
                 type="text"
@@ -196,9 +196,9 @@ const Output: React.FC = () => {
               <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-[#c6c6c6]" size={16} />
             </div>
 
-            <div className="text-center text-sm text-[#c6c6c6]">
+            {/*<div className="text-center text-sm text-[#c6c6c6]">
               {filteredHistory.length > 0 ? `Page ${currentPage} of ${totalPages}` : 'No Outputs'}
-            </div>
+            </div>*/}
 
             <div className="justify-self-end">
               <Pagination
