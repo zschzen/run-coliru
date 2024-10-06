@@ -22,7 +22,6 @@ const Editor: React.FC = () => {
   const editorRef = useRef<any>(null);
   const [isClient, setIsClient] = useState<boolean>(false);
   const monacoRef = useRef<typeof import("monaco-editor")>();
-
   const [monacoOptions, setMonacoOptions] = useState(defaultOptions);
 
   useEffect(() => {
@@ -30,21 +29,12 @@ const Editor: React.FC = () => {
   }, []);
 
   const handleEditorChange = useCallback(
-    (value: string | undefined) => {
+    (value: string | undefined, event: any) => {
       if (value !== undefined) {
         const updatedTabs = state.tabs.map((tab) =>
           tab.id === state.activeTab ? { ...tab, content: value } : tab
         );
         dispatch({ type: "SET_TABS", payload: updatedTabs });
-
-        /*
-        // Validate the model on content change
-        if (editorRef.current && monacoRef.current) {
-          const model = editorRef.current.getModel();
-          const markerCounts = validateModel(model, monacoRef.current);
-          dispatch({ type: "SET_MARKER_COUNTS", payload: markerCounts });
-        }
-        */
       }
     },
     [state.activeTab, state.tabs, dispatch]
@@ -53,7 +43,6 @@ const Editor: React.FC = () => {
   const handleEditorDidMount = (editor: any, monaco: typeof import("monaco-editor")) => {
     editorRef.current = editor;
     monacoRef.current = monaco;
-
     // Initial validation
     const model = editor.getModel();
     const markerCounts = validateModel(model, monaco);
@@ -69,19 +58,24 @@ const Editor: React.FC = () => {
     }
   }, [state.output, dispatch]);
 
-  const activeTabContent = state.tabs.find((tab) => tab.id === state.activeTab)?.content || "";
+  const activeTab = state.tabs.find((tab) => tab.id === state.activeTab);
+  const activeTabPath = activeTab?.id || '';
+  const activeTabContent = activeTab?.content || '';
 
   if (!isClient) {
     return loadingText();
   }
 
   return (
-    <div className="h-full relative">
+    <div className="relative w-screen h-full select-none">
       <MonacoEditor
+        width="100%"
         height="100%"
+        className="w-full h-full"
         defaultLanguage="cpp"
         theme="vs-dark"
-        value={activeTabContent}
+        path={activeTabPath}
+        defaultValue={activeTabContent}
         onChange={handleEditorChange}
         onMount={handleEditorDidMount}
         options={monacoOptions}
