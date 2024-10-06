@@ -14,56 +14,77 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import { MessageSquare } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
-const emojis = ["😠", "😕", "😐", "🙂", "😍"]
+const emojis = [
+  { emoji: "😠", label: "Hate it" },
+  { emoji: "😕", label: "Dislike it" },
+  { emoji: "😐", label: "It's okay" },
+  { emoji: "🙂", label: "Like it" },
+  { emoji: "😍", label: "Love it" }
+]
 
 const messages = [
-  "Your insights would be most logical. How did your experience align with expectations?",
-  "Survival is in the details. How was your journey with us?",
-  "Your quest isn’t complete yet. How did you find your adventure?",
-  "The truth lies in the player’s hands. What was your experience with our world?",
-  "What have you done... and how did it feel? Share your thoughts.",
-  "In these lands, every action has weight. How did your story unfold?",
-  "Every step matters. How did you survive this experience?",
-  "Your mission is clear. Was your journey to feedback complete?",
-  "A new path lies ahead. What was your last save point like?",
-  "Our world evolves with each player. What did you contribute?",
+  "How did your experience align with expectations?",
+  "Share your thoughts on your journey with us.",
+  "What stood out in your adventure?",
+  "How did our world resonate with you?",
+  "What emotions did your experience evoke?",
+  "How did your story unfold in our realm?",
+  "What challenges did you face?",
+  "Was your quest for feedback fulfilling?",
+  "What new perspectives did you gain?",
+  "How did you shape our evolving world?",
 ];
 
 const EmojiRating = ({ rating, setRating }: { rating: number; setRating: (rating: number) => void }) => {
   return (
-    <div className="flex justify-center space-x-4 w-full">
-      {emojis.map((emoji, index) => (
-        <button
-          key={index}
-          onClick={() => setRating(index + 1)}
-          className={`text-3xl transition-all ease-in-out hover:scale-110 ${
-            index + 1 === rating ? "scale-125" : "opacity-50 hover:opacity-100"
-          }`}
-          aria-label={`Rate ${index + 1} out of 5`}
-        >
-          {emoji}
-        </button>
+    <div className="flex justify-between w-full mb-6">
+      {emojis.map((item, index) => (
+        <TooltipProvider key={index}>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                onClick={() => setRating(index + 1)}
+                className={`text-3xl sm:text-4xl transition-all ease-in-out hover:scale-110 ${
+                  index + 1 === rating ? "scale-125" : "opacity-50 hover:opacity-100"
+                }`}
+                aria-label={`Rate ${index + 1} out of 5`}
+              >
+                {item.emoji}
+              </button>
+            </TooltipTrigger>
+            <TooltipContent side="bottom" className="bg-[#333] text-[#e0e0e0] border-[#4a4a4a]">
+              <p>{item.label}</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       ))}
     </div>
   )
 }
 
 export default function Feedback() {
-  const [rating, setRating] = useState(0)
-  const [comment, setComment] = useState("")
-  const [isOpen, setIsOpen] = useState(false)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const { toast } = useToast()
-  const [randomMessage, setRandomMessage] = useState(messages[0])
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
+  const [randomMessage, setRandomMessage] = useState(messages[0]);
 
   useEffect(() => {
     if (isOpen) {
       const randomIndex = Math.floor(Math.random() * messages.length)
       setRandomMessage(messages[randomIndex])
+
     } else {
       setRating(0);
+      setComment("");
     }
   }, [isOpen])
 
@@ -88,38 +109,32 @@ export default function Feedback() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
   
-      // Check if the response is JSON
       const contentType = response.headers.get("content-type");
       if (contentType && contentType.indexOf("application/json") !== -1) {
         const data = await response.json() as FeedbackResponse;
         if (data.success) {
           toast({
-            title: "Feedback Accepted",
-            description: "Your words carry weight. We will use them wisely.",
+            title: "Feedback Received",
+            description: "Thank you for shaping our world.",
             variant: "default",
           });
           setIsOpen(false);
-          setRating(0);
-          setComment("");
         } else {
           throw new Error(data.error || "Submission failed");
         }
       } else {
-        // If the response is not JSON, assume it's a success
         toast({
-          title: "Feedback Accepted",
-          description: "Your words carry weight. We will use them wisely.",
+          title: "Feedback Received",
+          description: "Thank you for shaping our world.",
           variant: "default",
         });
         setIsOpen(false);
-        setRating(0);
-        setComment("");
       }
     } catch (error) {
       console.error('Error submitting feedback:', error);
       toast({
         title: "Transmission Failed",
-        description: error instanceof Error ? error.message : "Something went wrong. Try sending your message again.",
+        description: error instanceof Error ? error.message : "Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -135,7 +150,7 @@ export default function Feedback() {
             <Button 
               size="sm" 
               variant="outline" 
-              className="bg-[#262626] border-[#393939] hover:bg-[#393939] text-[#c6c6c6] hover:text-white"
+              className="bg-[#1a1a1a] border-[#333] hover:bg-[#333] text-[#e0e0e0] hover:text-white transition-colors duration-300"
             >
               <MessageSquare className="h-4 w-4 mr-2" />
               Feedback
@@ -143,34 +158,35 @@ export default function Feedback() {
           </DialogTrigger>
         </TooltipTrigger>
         <TooltipContent>
-          <p>Share your feedback</p>
+          <p>Share your thoughts</p>
         </TooltipContent>
       </Tooltip>
-      <DialogContent className="sm:max-w-[425px] bg-[#262626] text-[#f4f4f4] border border-[#393939]">
-        <DialogHeader>
-          <DialogTitle>Share Your Feedback</DialogTitle>
-          <DialogDescription className="text-[#c6c6c6]">
+      <DialogContent className="sm:max-w-[500px] w-11/12 max-w-lg mx-auto bg-[#1a1a1a] text-[#e0e0e0] border border-[#333] shadow-lg rounded-lg">
+        <DialogHeader className="border-b border-[#333] pb-4">
+          <DialogTitle className="text-xl sm:text-2xl font-bold text-[#0f62fe]">Your Voice Matters</DialogTitle>
+          <DialogDescription className="text-[#b0b0b0] text-sm sm:text-base mt-2">
             {randomMessage}
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
+        <div className="py-2">
+          <div className="relative h-16">
+            <EmojiRating rating={rating} setRating={setRating} />
+          </div>
           <Textarea
-            placeholder={"What if..."}
+            placeholder="Share your experience..."
             value={comment}
+            autoFocus={true}
             onChange={(e) => setComment(e.target.value)}
-            className="h-24 resize-none bg-[#393939] border-[#525252] text-[#f4f4f4]"
+            className="h-32 resize-none bg-[#262626] border-[#404040] text-[#e0e0e0] text-sm sm:text-base focus:ring-[#0f62fe] focus:border-[#0f62fe] transition-colors duration-300"
           />
         </div>
-        <DialogFooter>
-
-          <EmojiRating rating={rating} setRating={setRating} />
-
+        <DialogFooter className="border-t border-[#333] pt-4">
           <Button
             onClick={handleSubmit} 
             disabled={rating === 0 || isSubmitting}
-            className="bg-[#0f62fe] hover:bg-[#0353e9] text-white"
+            className="bg-[#0f62fe] hover:bg-[#0353e9] text-white w-full py-2 rounded-md transition-colors duration-300"
           >
-            {isSubmitting ? "Submitting..." : "Submit Feedback"}
+            {isSubmitting ? "Sending..." : "Submit Feedback"}
           </Button>
         </DialogFooter>
       </DialogContent>
