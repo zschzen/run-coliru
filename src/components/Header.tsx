@@ -90,7 +90,7 @@ const Header: React.FC = () => {
         <div className="flex items-center gap-2">
           <h1 className="text-xl font-semibold hidden sm:inline">
             Run, 
-            <a className="underline decoration-wavy hover:decoration-pink-500" href="http://coliru.stacked-crooked.com" target="_blank" rel="noopener noreferrer">
+            <a className="underline decoration-from-font decoration-wavy hover:decoration-pink-500" href="http://coliru.stacked-crooked.com" target="_blank" rel="noopener noreferrer">
               Coliru
             </a>!
           </h1>

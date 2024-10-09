@@ -56,8 +56,8 @@ const TabItem: React.FC<TabItemProps> = ({ tab, closeTab, markerCount }) => {
     >
 
       {/* Borders */}
-      <span className="absolute m-0 p-0 right-0 h-full w-px bg-[#424242AA]" />
-      <span className={`absolute m-0 p-0 left-0 right-0 h-px ${isActive ? 'top-0 bg-blue-500' : 'bottom-0 bg-[#424242AA]'}`} />
+      <span className="absolute m-0 p-0 right-0 h-full w-px bg-[#393939]" />
+      <span className={`absolute m-0 p-0 left-0 right-0 h-px ${isActive ? 'top-0 bg-blue-500' : 'bottom-0 bg-[#393939]'}`} />
 
       <FileIcon filename={tab.id} className="h-4 w-4 mr-2" />
       <span className="flex-grow select-none">{tab.id}</span>

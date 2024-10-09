@@ -133,11 +133,11 @@ const Tabs: React.FC = () => {
             </DragOverlay>
           </DndContext>
 
-          <div className="flex-grow flex items-center border-b border-[#424242AA] h-full">
+          <div className="flex-grow flex items-center border-b border-[#393939] h-full">
             <Tooltip>
               <TooltipTrigger asChild>
                 <div
-                  className="flex-shrink-0 flex items-center h-full px-3 py-1 text-[#c6c6c6] hover:bg-[#2a2d2e70] cursor-pointer border-dashed border-r border-[#424242AA]"
+                  className="flex-shrink-0 flex items-center h-full px-3 py-1 text-[#c6c6c6] hover:bg-[#2a2d2e70] cursor-pointer border-dashed border-r border-[#393939]"
                   onClick={addNewTab}
                   aria-label="New tab"
                 >
