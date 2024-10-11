@@ -4,17 +4,15 @@ import { useAppContext } from "@/context/AppContext";
 import { parseColirusErrors, updateEditorMarkers, validateModel } from "@/utils/errorParser";
 import { defaultOptions } from '@/utils/defaultMonacoOptions';
 
-const loadingText = () => {
-  return (
-    <div className="flex items-center justify-center w-full h-full">
-      <p>Loading Editor...</p>
-    </div>
-  );
-};
+const LoadingBar = () => (
+  <div className="relative top-0 w-full h-full bg-[#1f1f1f] overflow-hidden">
+    <span className="absolute top-0 h-0.5 w-1/4 bg-blue-500 animate-loading"></span>
+  </div>
+);
 
 const MonacoEditor = dynamic(() => import("@monaco-editor/react"), {
   ssr: false,
-  loading: loadingText,
+  loading: LoadingBar,
 });
 
 const Editor: React.FC = () => {
@@ -63,7 +61,7 @@ const Editor: React.FC = () => {
   const activeTabContent = activeTab?.content || '';
 
   if (!isClient) {
-    return loadingText();
+    return <LoadingBar />;
   }
 
   return (
@@ -79,6 +77,7 @@ const Editor: React.FC = () => {
         onChange={handleEditorChange}
         onMount={handleEditorDidMount}
         options={monacoOptions}
+        loading={LoadingBar()}
       />
     </div>
   );
